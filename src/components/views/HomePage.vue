@@ -8,12 +8,12 @@
 
 <script setup lang="ts">
     import { provide, reactive, ref } from 'vue';
-    import MainLayout from '../../layouts/MainLayout.vue';
-    import LeftSection from '../LeftSection.vue';
-    import RightSection from '../RightSection.vue';
-    import SideBar from '../SideBar.vue';
-    import type User from '../../types/Users';
-    import { uuidv4 } from '../../utils/Conversations';
+    import MainLayout from '@/layouts/MainLayout.vue';
+    import LeftSection from '@/components/LeftSection.vue';
+    import RightSection from '@/components/RightSection.vue';
+    import SideBar from '@/components/SideBar.vue';
+    import type User from '@/types/Users';
+    import { uuidv4 } from '@/utils/Conversations';
 
     const selectConversation = ref();
     const openSideBar = ref(false);

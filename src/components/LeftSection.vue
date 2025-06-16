@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
     import { inject, ref } from 'vue';
-    import UserCard from './Cards/UserCard.vue';
+    import UserCard from '@/components/Cards/UserCard.vue';
 
     const props = defineProps<{
         conversations: any[];

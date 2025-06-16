@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
     import { inject, ref } from 'vue';
-    import UserCard from './Cards/UserCard.vue';
+    import UserCard from '@/components/Cards/UserCard.vue';
 
     const selectedConversationIndex = ref<number | null>(null);
     const currentConversation: any = inject('selectedConversation');

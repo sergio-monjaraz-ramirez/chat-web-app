@@ -36,8 +36,8 @@
     </div>
 </template>
 <script lang="ts" setup>
-    import { formatTimestamp } from '../../utils/Conversations';
-    import SkeletonCard from './SkeletonCard.vue';
+    import { formatTimestamp } from '@/utils/Conversations';
+    import SkeletonCard from '@/components/Cards/SkeletonCard.vue';
 
     defineProps<{
         selected?: boolean;

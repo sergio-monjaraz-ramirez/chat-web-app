@@ -82,16 +82,18 @@
                     <span class="material-icons text-2xl">send</span>
                 </button>
             </footer>
-            <!-- TODO: Create component the no message yet -->
-            <div v-else>No conversation selected yet</div>
+            <div v-else>
+                <NoMessage />
+            </div>
         </section>
     </div>
 </template>
 
 <script lang="ts" setup>
     import { computed, inject, nextTick, ref, watch } from 'vue';
-    import { uuidv4, formatTimestamp } from '../utils/Conversations';
-    import HeaderSection from './HeaderSection.vue';
+    import { uuidv4, formatTimestamp } from '@/utils/Conversations';
+    import HeaderSection from '@/components/HeaderSection.vue';
+    import NoMessage from '@/components/NoMessage.vue';
 
     const botTyping = ref(false);
     const newMessage = ref('');

@@ -29,7 +29,7 @@
         </header>
         <button
             class="ml-auto mr-4 p-2 h-10 rounded-3xl cursor-pointer hover:bg-secondary"
-            @click="isDark = !isDark"
+            @click="toggleDark"
             aria-label="Toggle dark mode"
         >
             <svg
@@ -66,9 +66,10 @@
     </section>
 </template>
 <script lang="ts" setup>
-    import { inject, ref } from 'vue';
-    defineEmits(['toggleSideBar', 'toggleTheme']);
+    import { inject } from 'vue';
+    import { useDarkMode } from '@/composables/useDarkMode';
+    const { isDark, toggleDark } = useDarkMode();
+    defineEmits(['toggleSideBar']);
 
-    const isDark = ref(false);
     const currentConversation: any = inject('selectedConversation');
 </script>
