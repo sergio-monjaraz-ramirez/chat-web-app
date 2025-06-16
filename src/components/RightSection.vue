@@ -90,7 +90,7 @@
 
 <script lang="ts" setup>
     import { computed, inject, nextTick, ref, watch } from 'vue';
-    import { uuidv4, formatTimestamp } from './utils/Conversations';
+    import { uuidv4, formatTimestamp } from '../utils/Conversations';
     import HeaderSection from './HeaderSection.vue';
 
     const botTyping = ref(false);
