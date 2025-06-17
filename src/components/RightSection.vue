@@ -1,6 +1,6 @@
 <template>
     <div class="w-full border-b border-b-border-primary dark:border-b-dark-border-primary">
-        <HeaderSection @toggleSideBar="$emit('toggleSideBar')" />
+        <HeaderSection />
 
         <section
             class="flex flex-col h-[84vh] col-span-2 row-span-2"
@@ -104,8 +104,6 @@
     const chatMessages = ref<HTMLElement | null>(null);
     const currentConversation: any = inject('selectedConversation');
 
-    defineEmits(['toggleSideBar']);
-
     // Detect if can send message
     const canSend = computed(() => newMessage.value.trim().length > 0 && !botTyping.value);
 
@@ -145,6 +143,7 @@
         nextTick(() => {
             if (chatMessages.value) {
                 chatMessages.value.scrollTop = chatMessages.value.scrollHeight;
+                console.log(chatMessages.value.offsetHeight);
             }
         });
     };

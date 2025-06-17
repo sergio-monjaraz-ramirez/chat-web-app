@@ -2,7 +2,7 @@
     <section class="flex h-18 py-6 border-b border-b-border-primary dark:border-b-dark-border-primary">
         <button
             class="md:hidden sm:block mr-4 p-2 h-10 rounded hover:bg-gray-100 dark:bg-dark-secondary"
-            @click="$emit('toggleSideBar')"
+            @click="openSideBar = true"
             aria-label="Open menu"
         >
             <svg
@@ -70,7 +70,6 @@
     import { useDarkMode } from '@/composables/useDarkMode';
     const { isDark, toggleDark } = useDarkMode();
 
-    defineEmits(['toggleSideBar']);
-
     const currentConversation: any = inject('selectedConversation');
+    const openSideBar = inject('toggleSideBar');
 </script>

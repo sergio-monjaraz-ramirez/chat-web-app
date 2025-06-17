@@ -2,7 +2,7 @@
     <MainLayout class="@container">
         <SideBar :is-open="openSideBar" @onToogle="openSideBar = false" :conversations="conversations" />
         <LeftSection class="@xs:hidden @md:flex" :conversations="conversations" />
-        <RightSection @toggleSideBar="openSideBar = true" />
+        <RightSection />
     </MainLayout>
 </template>
 
@@ -117,6 +117,7 @@
         },
     ]);
     provide('selectedConversation', selectConversation);
+    provide('toggleSideBar', openSideBar);
 </script>
 
 <style scoped></style>
