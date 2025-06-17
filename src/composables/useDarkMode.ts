@@ -17,12 +17,10 @@ export function useDarkMode() {
         const saved = localStorage.getItem('theme');
         if (saved) {
             isDark.value = saved === 'dark';
+        } else {
+            // fallback to system preference
+            isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
         }
-
-        // else {
-        //     // fallback to system preference
-        //     isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        // }
         updateHtmlClass();
     };
 

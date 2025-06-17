@@ -16,14 +16,14 @@
             </svg>
         </button>
 
-        <header class="flex items-center gap-4 py-3 px-6 text-black dark:text-white" v-if="currentConversation">
+        <header class="flex items-center gap-4 py-3 px-6 text-black dark:text-white" v-if="selectedClient">
             <div
                 class="w-12 h-12 rounded-full bg-cover bg-center flex-shrink-0"
-                :style="{ backgroundImage: 'url(' + currentConversation.user.avatar + ')' }"
-                :aria-label="currentConversation.user.name + ' avatar'"
+                :style="{ backgroundImage: 'url(' + selectedClient.avatar + ')' }"
+                :aria-label="selectedClient.name + ' avatar'"
             ></div>
             <div>
-                <span class="font-bold md:text-xl xs:text-md"> {{ currentConversation.user.name }}</span>
+                <span class="font-bold md:text-xl xs:text-md"> {{ selectedClient.name }}</span>
                 <p class="text-primary dark:text-dark-primary">Online</p>
             </div>
         </header>
@@ -68,8 +68,9 @@
 <script lang="ts" setup>
     import { inject } from 'vue';
     import { useDarkMode } from '@/composables/useDarkMode';
+    import User from '@/types/Users';
     const { isDark, toggleDark } = useDarkMode();
 
-    const currentConversation: any = inject('selectedConversation');
     const openSideBar = inject('toggleSideBar');
+    const selectedClient: User | undefined = inject('selectedClient');
 </script>

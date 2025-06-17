@@ -16,26 +16,26 @@
                 aria-atomic="false"
                 aria-relevant="additions"
                 tabindex="0"
-                v-if="currentConversation"
+                v-if="selectedClient"
             >
                 <div class="px-3 py-3">
                     <div
                         class="overflow-y-auto scroll-smooth overflow-x-hidden flex flex-col gap-2 max-h-[69vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
                     >
                         <div
-                            v-for="msg in currentConversation.messages"
-                            :key="msg.id"
+                            v-for="msg in currentConversation"
+                            :key="msg._id"
                             :class="[
                                 'relative inline-block max-w-[70%] p-4 rounded-2xl mb-3 leading-snug',
-                                msg.from === 'user'
+                                msg.message.typeUser === 'User'
                                     ? 'bg-white dark:bg-dark-primary self-end dark:text-white animate-slideInRight'
                                     : 'bg-[#3795bd] dark:bg-[#323232] text-white self-start animate-slideInLeft',
                             ]"
-                            :aria-label="msg.from === 'user' ? 'You' : currentConversation.user.name"
+                            :aria-label="msg.message.typeUser === 'User' ? 'You' : selectedClient.name"
                         >
-                            <div>{{ msg.text }}</div>
+                            <div>{{ msg.message.text }}</div>
                             <div class="text-xs absolute bottom-1 right-3" aria-hidden="true">
-                                {{ formatTimestamp(msg.timestamp) }}
+                                {{ formatTimestamp(msg.message.createdAt) }}
                             </div>
                         </div>
                         <div
@@ -44,7 +44,7 @@
                             aria-live="off"
                             aria-hidden="true"
                         >
-                            <span>{{ currentConversation.user.name }} is typing</span>
+                            <span>{{ selectedClient.name }} is typing</span>
                             <span class="flex gap-1">
                                 <span
                                     class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink"
@@ -62,7 +62,7 @@
             </section>
             <footer
                 class="py-2 px-4 bg-white dark:bg-dark-bg flex items-center gap-2 flex-shrink-0"
-                v-if="currentConversation"
+                v-if="selectedClient"
                 role="form"
                 aria-label="Send a message"
             >
@@ -98,25 +98,41 @@
     import { uuidv4, formatTimestamp } from '@/utils/Conversations';
     import HeaderSection from '@/components/HeaderSection.vue';
     import NoMessage from '@/components/NoMessage.vue';
+    import { useClients } from '@/composables/useClients';
+    import Conversation from '@/types/Conversation';
+    import User from '@/types/Users';
 
     const botTyping = ref(false);
     const newMessage = ref('');
     const chatMessages = ref<HTMLElement | null>(null);
-    const currentConversation: any = inject('selectedConversation');
+    const currentConversation = ref<Conversation[]>([]);
+
+    const selectedClient = inject<User | undefined>('selectedClient');
 
     // Detect if can send message
     const canSend = computed(() => newMessage.value.trim().length > 0 && !botTyping.value);
 
     const sendMessage = () => {
-        if (!canSend.value || !currentConversation.value) return;
+        if (!canSend.value || !selectedClient) return;
         const txt = newMessage.value.trim();
         newMessage.value = '';
         // Add user message to conversation
-        currentConversation.value.messages.push({
-            id: uuidv4(),
-            from: 'user',
-            text: txt,
-            timestamp: new Date(),
+        currentConversation.value.push({
+            _id: uuidv4(),
+            type: 'Message',
+            client: selectedClient._id,
+            message: {
+                _id: uuidv4(),
+                type: 'text',
+                typeUser: 'User',
+                text: txt,
+                user: '',
+                createdAt: new Date().toLocaleDateString(),
+                updatedAt: new Date().toLocaleDateString(),
+                deliveredAt: new Date().toLocaleDateString(),
+                readAt: '',
+            },
+            createdAt: new Date().toLocaleString(),
         });
         // Show typing indicator
         botTyping.value = true;
@@ -128,11 +144,22 @@
         setTimeout(async () => {
             // const reply = await fetchOpenAIReply(txt, currentConversation.value);
 
-            currentConversation.value.messages.push({
-                id: uuidv4(),
-                from: 'bot',
-                text: 'Lorem',
-                timestamp: new Date(),
+            currentConversation.value.push({
+                _id: uuidv4(),
+                type: 'Message',
+                client: selectedClient?._id,
+                message: {
+                    _id: uuidv4(),
+                    type: 'text',
+                    typeUser: 'Client',
+                    text: 'lorem',
+                    user: '',
+                    createdAt: new Date().toLocaleDateString(),
+                    updatedAt: new Date().toLocaleDateString(),
+                    deliveredAt: new Date().toLocaleDateString(),
+                    readAt: '',
+                },
+                createdAt: new Date().toLocaleString(),
             });
             botTyping.value = false;
             scrollChatToBottom();
@@ -147,12 +174,13 @@
             }
         });
     };
-    watch(
-        () => currentConversation.value && currentConversation.value.messages.length,
-        () => {
-            scrollChatToBottom();
-        },
-    );
+
+    // watch(
+    //     () => selectedClient.value && conversation.value.messages.length,
+    //     () => {
+    //         scrollChatToBottom();
+    //     },
+    // );
 </script>
 
 <style scoped>

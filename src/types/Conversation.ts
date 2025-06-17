@@ -5,5 +5,5 @@ export default interface Conversation {
     type: 'Message';
     client?: string;
     message: Message;
-    createdAt: string;
+    createdAt: string | Date;
 }
