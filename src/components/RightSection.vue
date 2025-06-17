@@ -1,16 +1,16 @@
 <template>
-    <div class="w-full border-b border-b-border-primary">
+    <div class="w-full border-b border-b-border-primary dark:border-b-dark-border-primary">
         <HeaderSection @toggleSideBar="$emit('toggleSideBar')" />
 
         <section
-            class="flex flex-col h-[85vh] col-span-2 row-span-2"
+            class="flex flex-col h-[84vh] col-span-2 row-span-2"
             role="main"
             tabindex="-1"
             aria-live="polite"
             aria-relevant="additions"
         >
             <section
-                class="flex-1 px-6 py-4"
+                class="flex-1 px-6 py-4 bg-secondary dark:bg-[#292929]"
                 ref="chatMessages"
                 aria-live="polite"
                 aria-atomic="false"
@@ -18,16 +18,18 @@
                 tabindex="0"
                 v-if="currentConversation"
             >
-                <div class="px-3 py-3 bg-secondary h-full rounded-2xl">
-                    <div class="overflow-y-auto scroll-smooth flex flex-col gap-2 max-h-[69vh]">
+                <div class="px-3 py-3">
+                    <div
+                        class="overflow-y-auto scroll-smooth overflow-x-hidden flex flex-col gap-2 max-h-[69vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+                    >
                         <div
                             v-for="msg in currentConversation.messages"
                             :key="msg.id"
                             :class="[
                                 'relative inline-block max-w-[70%] p-4 rounded-2xl mb-3 leading-snug',
                                 msg.from === 'user'
-                                    ? 'bg-white self-end border-b-[2px] border-b-white animate-slideInRight'
-                                    : 'bg-[#3795bd] text-white border border-gray-200 self-start border-b-[2px] border-b-[#3795bd] animate-slideInLeft',
+                                    ? 'bg-white dark:bg-dark-primary self-end dark:text-white animate-slideInRight'
+                                    : 'bg-[#3795bd] dark:bg-[#323232] text-white self-start animate-slideInLeft',
                             ]"
                             :aria-label="msg.from === 'user' ? 'You' : currentConversation.user.name"
                         >
@@ -38,18 +40,20 @@
                         </div>
                         <div
                             v-if="botTyping"
-                            class="flex items-center gap-2 italic text-gray-600 mt-2 self-start"
+                            class="flex items-center gap-2 italic text-gray-600 dark:text-gray-200 mt-2 self-start"
                             aria-live="off"
                             aria-hidden="true"
                         >
                             <span>{{ currentConversation.user.name }} is typing</span>
                             <span class="flex gap-1">
-                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full inline-block animate-blink"></span>
                                 <span
-                                    class="w-1.5 h-1.5 bg-gray-400 rounded-full inline-block animate-blink delay-200"
+                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink"
                                 ></span>
                                 <span
-                                    class="w-1.5 h-1.5 bg-gray-400 rounded-full inline-block animate-blink delay-400"
+                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink delay-200"
+                                ></span>
+                                <span
+                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink delay-400"
                                 ></span>
                             </span>
                         </div>
@@ -57,7 +61,7 @@
                 </div>
             </section>
             <footer
-                class="py-2 px-4 bg-white border-t border-gray-200 flex items-center gap-2 flex-shrink-0"
+                class="py-2 px-4 bg-white dark:bg-dark-bg flex items-center gap-2 flex-shrink-0"
                 v-if="currentConversation"
                 role="form"
                 aria-label="Send a message"
@@ -71,13 +75,13 @@
                     :aria-multiline="true"
                     aria-label="Message input"
                     ref="messageInput"
-                    class="resize-none border-none py-3 px-4 rounded-2xl text-base flex-1 outline-offset-2 font-sans max-h-[150px] leading-snug focus:outline-1 focus:outline-primary"
+                    class="resize-none border-none dark:text-white py-3 px-4 rounded-2xl text-base flex-1 outline-offset-2 font-sans max-h-[150px] leading-snug focus:outline-1 focus:outline-primary"
                 ></textarea>
                 <button
                     :disabled="!canSend"
                     @click="sendMessage"
                     aria-label="Send message"
-                    class="bg-primary text-white border-none rounded-full w-11 h-11 flex items-center justify-center transition-colors duration-300 disabled:bg-[#70AEC7] disabled:cursor-default"
+                    class="bg-primary dark:bg-dark-primary text-white border-none rounded-full w-11 h-11 flex items-center justify-center transition-colors duration-300"
                 >
                     <span class="material-icons text-2xl">send</span>
                 </button>

@@ -2,8 +2,8 @@
     <div
         v-if="conversation"
         :class="[
-            'flex items-center text-black py-3 px-4 cursor-pointer transition-colors duration-150 bg-gray-100 hover:bg-gray-200 my-2.5 rounded-xl',
-            { '!bg-primary text-gray-100': selected },
+            'flex items-center text-black dark:text-gray-100 py-3 px-4 cursor-pointer transition-colors duration-150 dark:bg-dark-border-primary dark:hover:bg-dark-secondary bg-gray-100 hover:bg-gray-200 my-2.5 rounded-xl',
+            { '!bg-primary dark:!bg-dark-primary text-gray-100': selected },
         ]"
     >
         <div
@@ -25,7 +25,7 @@
         </div>
         <div
             v-if="conversation.unreadCount > 0"
-            class="bg-primary text-white text-xs px-2 py-0.5 rounded-full ml-1 flex-shrink-0 min-w-[24px] text-center"
+            class="bg-primary dark:bg-dark-primary text-white text-xs px-2 py-0.5 rounded-full ml-1 flex-shrink-0 min-w-[24px] text-center"
             aria-label="Unread messages count"
         >
             {{ conversation.unreadCount }}

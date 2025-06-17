@@ -1,11 +1,11 @@
 <template>
     <div
         :class="[
-            'fixed inset-y-0 left-0 z-30 w-9/12 transform rounded-r-2xl bg-white transition-transform duration-300 ease-in-out',
+            'fixed inset-y-0 left-0 z-30 w-9/12 transform rounded-r-2xl bg-white dark:bg-dark-bg transition-transform duration-300 ease-in-out',
             isOpen ? 'translate-x-0' : '-translate-x-full',
         ]"
     >
-        <section class="h-screen mt-10 bg-white text-white flex flex-col">
+        <section class="h-screen mt-10 text-white flex flex-col">
             <ul class="list-none p-5 w-full" role="list">
                 <li
                     v-for="(conv, index) in conversations"

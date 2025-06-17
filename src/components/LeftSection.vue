@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full h-[95vh] px-4 border-r-1 border-r-border-primary">
+    <section class="w-full h-[94vh] px-4 border-r-1 border-r-border-primary dark:border-r-dark-border-primary">
         <ul class="list-none m-0 p-0 w-full" role="list">
             <li
                 v-for="(conv, index) in conversations"

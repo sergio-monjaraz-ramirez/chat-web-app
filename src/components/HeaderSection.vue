@@ -1,7 +1,7 @@
 <template>
-    <section class="flex h-18 py-6 border-b border-b-border-primary">
+    <section class="flex h-18 py-6 border-b border-b-border-primary dark:border-b-dark-border-primary">
         <button
-            class="md:hidden sm:block mr-4 p-2 rounded hover:bg-gray-100"
+            class="md:hidden sm:block mr-4 p-2 h-10 rounded hover:bg-gray-100 dark:bg-dark-secondary"
             @click="$emit('toggleSideBar')"
             aria-label="Open menu"
         >
@@ -16,7 +16,7 @@
             </svg>
         </button>
 
-        <header class="flex items-center gap-4 py-3 px-6 text-black" v-if="currentConversation">
+        <header class="flex items-center gap-4 py-3 px-6 text-black dark:text-white" v-if="currentConversation">
             <div
                 class="w-12 h-12 rounded-full bg-cover bg-center flex-shrink-0"
                 :style="{ backgroundImage: 'url(' + currentConversation.user.avatar + ')' }"
@@ -24,11 +24,11 @@
             ></div>
             <div>
                 <span class="font-bold md:text-xl xs:text-md"> {{ currentConversation.user.name }}</span>
-                <p class="text-primary">Online</p>
+                <p class="text-primary dark:text-dark-primary">Online</p>
             </div>
         </header>
         <button
-            class="ml-auto mr-4 p-2 h-10 rounded-3xl cursor-pointer hover:bg-secondary"
+            class="ml-auto mr-4 p-2 h-10 rounded-3xl cursor-pointer hover:bg-secondary dark:bg-dark-secondary"
             @click="toggleDark"
             aria-label="Toggle dark mode"
         >
@@ -69,6 +69,7 @@
     import { inject } from 'vue';
     import { useDarkMode } from '@/composables/useDarkMode';
     const { isDark, toggleDark } = useDarkMode();
+
     defineEmits(['toggleSideBar']);
 
     const currentConversation: any = inject('selectedConversation');

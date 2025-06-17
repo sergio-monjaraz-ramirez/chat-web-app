@@ -2,10 +2,17 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
 @theme {
     --color-primary: #3795bd;
     --color-secondary: #f7f7f8;
     --color-border-primary: #ddd;
+    --color-light-bg: #f5f5f5;
+
+    --color-dark-bg: #121212;
+    --color-dark-primary: #00a3ff;
+    --color-dark-secondary: #a0a0a0;
+    --color-dark-border-primary: #434343;
     --breakpoint-sm: 450px;
 }
 
@@ -21,15 +28,3 @@
     flex-direction: column;
     min-height: 100vh;
 }
-
-/* .main-header {
-    background: #2d3748;
-    color: #fff;
-    padding: 1rem;
-}
-
-.main-content {
-    flex: 1;
-    padding: 1rem;
-    background: #f7fafc;
-} */
