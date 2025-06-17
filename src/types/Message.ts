@@ -1,6 +1,6 @@
 export default interface Message {
     _id: string;
-    type: 'text';
+    type: 'text' | 'video' | 'document' | 'image';
     text: string;
     typeUser: 'User' | 'Client' | 'UserSystem';
     user: string;

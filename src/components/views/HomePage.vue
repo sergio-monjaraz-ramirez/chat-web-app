@@ -12,14 +12,26 @@
     import LeftSection from '@/components/LeftSection.vue';
     import RightSection from '@/components/RightSection.vue';
     import SideBar from '@/components/SideBar.vue';
-    import { useClients } from '@/composables/useClients';
+    import User from '@/types/Users';
+    import clientsApiService from '@/services/clientsApiService';
+    import { avatars } from '@/constants';
 
     const openSideBar = ref(false);
-    const { fetchClients, clients, selectedClient } = useClients();
+    const selectedClient = ref<User>();
+    const clients = ref<User[]>([]);
 
-    onMounted(async () => {
-        await fetchClients();
+    onMounted(() => {
+        fetchClients();
     });
+
+    const fetchClients = async () => {
+        try {
+            const response = await clientsApiService.getAll('clients.json');
+            clients.value = response.map((client: User, index: number) => ({ ...client, avatar: avatars[index] }));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const conversations = reactive([]);
     provide('toggleSideBar', openSideBar);

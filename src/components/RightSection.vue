@@ -27,13 +27,11 @@
                             :key="msg._id"
                             :class="[
                                 'relative inline-block max-w-[70%] p-4 rounded-2xl mb-3 leading-snug',
-                                msg.message.typeUser === 'User'
-                                    ? 'bg-white dark:bg-dark-primary self-end dark:text-white animate-slideInRight'
-                                    : 'bg-[#3795bd] dark:bg-[#323232] text-white self-start animate-slideInLeft',
+                                getClassByUserType(msg.message.typeUser),
                             ]"
-                            :aria-label="msg.message.typeUser === 'User' ? 'You' : selectedClient.name"
+                            :aria-label="msg.message.typeUser === 'Client' ? 'You' : selectedClient.name"
                         >
-                            <div>{{ msg.message.text }}</div>
+                            <div>{{ msg.message.type == 'text' ? msg.message.text : 'Attached file' }}</div>
                             <div class="text-xs absolute bottom-1 right-3" aria-hidden="true">
                                 {{ formatTimestamp(msg.message.createdAt) }}
                             </div>
@@ -98,19 +96,24 @@
     import { uuidv4, formatTimestamp } from '@/utils/Conversations';
     import HeaderSection from '@/components/HeaderSection.vue';
     import NoMessage from '@/components/NoMessage.vue';
-    import { useClients } from '@/composables/useClients';
     import Conversation from '@/types/Conversation';
-    import User from '@/types/Users';
+    import conversationApiClient from '@/services/conversationApiClient';
 
     const botTyping = ref(false);
     const newMessage = ref('');
     const chatMessages = ref<HTMLElement | null>(null);
     const currentConversation = ref<Conversation[]>([]);
 
-    const selectedClient = inject<User | undefined>('selectedClient');
+    const selectedClient: any = inject('selectedClient');
 
     // Detect if can send message
     const canSend = computed(() => newMessage.value.trim().length > 0 && !botTyping.value);
+
+    const getClassByUserType = (userType: 'User' | 'Client' | 'UserSystem') => {
+        if (userType === 'User') return 'bg-[#3795bd] dark:bg-[#323232] text-white self-start animate-slideInLeft';
+        if (userType === 'Client') return 'bg-white dark:bg-dark-primary self-end dark:text-white animate-slideInRight';
+        return 'bg-gray-400 dark:bg-gray-600 text-white self-center animate-slideInLeft';
+    };
 
     const sendMessage = () => {
         if (!canSend.value || !selectedClient) return;
@@ -124,7 +127,7 @@
             message: {
                 _id: uuidv4(),
                 type: 'text',
-                typeUser: 'User',
+                typeUser: 'Client',
                 text: txt,
                 user: '',
                 createdAt: new Date().toLocaleDateString(),
@@ -151,7 +154,7 @@
                 message: {
                     _id: uuidv4(),
                     type: 'text',
-                    typeUser: 'Client',
+                    typeUser: 'User',
                     text: 'lorem',
                     user: '',
                     createdAt: new Date().toLocaleDateString(),
@@ -174,6 +177,23 @@
             }
         });
     };
+
+    const getConversation = async () => {
+        if (selectedClient) {
+            try {
+                currentConversation.value = await conversationApiClient.getAll(`${selectedClient.value._id}.json`);
+            } catch (error) {
+                console.error('errpr');
+            }
+        }
+    };
+
+    watch(
+        () => selectedClient.value,
+        () => {
+            getConversation();
+        },
+    );
 
     // watch(
     //     () => selectedClient.value && conversation.value.messages.length,
