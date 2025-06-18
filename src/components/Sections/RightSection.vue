@@ -8,43 +8,13 @@
                     <div
                         class="overflow-y-auto scroll-smooth overflow-x-hidden flex flex-col gap-2 max-h-[69vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
                     >
-                        <div
-                            v-for="msg in currentConversation"
-                            :key="msg._id"
-                            :class="[
-                                'relative inline-block max-w-[70%] p-4 rounded-2xl mb-3 leading-snug',
-                                getClassByUserType(msg.message.typeUser),
-                            ]"
-                            :aria-label="msg.message.typeUser === 'Client' ? 'You' : selectedClient.name"
-                        >
-                            <div>{{ msg.message.type == 'text' ? msg.message.text : 'Attached file' }}</div>
-                            <div class="text-xs absolute bottom-1 right-3" aria-hidden="true">
-                                {{ formatTimestamp(msg.message.createdAt) }}
-                            </div>
-                        </div>
-                        <div
-                            v-if="botTyping"
-                            class="flex items-center gap-2 italic text-gray-600 dark:text-gray-200 mt-2 self-start"
-                            aria-live="off"
-                            aria-hidden="true"
-                        >
-                            <span>{{ selectedClient.name }} is typing</span>
-                            <span class="flex gap-1">
-                                <span
-                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink"
-                                ></span>
-                                <span
-                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink delay-200"
-                                ></span>
-                                <span
-                                    class="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-50 rounded-full inline-block animate-blink delay-400"
-                                ></span>
-                            </span>
-                        </div>
+                        <MessageCard v-for="msg in currentConversation" :key="msg._id" :message="msg.message" />
+
+                        <BotTyping v-if="botTyping" />
                     </div>
                 </div>
             </div>
-            <footer
+            <div
                 class="py-2 px-4 bg-white dark:bg-dark-bg flex items-center gap-2 flex-shrink-0"
                 v-if="selectedClient"
                 role="form"
@@ -69,7 +39,7 @@
                 >
                     <span class="material-icons text-2xl">send</span>
                 </button>
-            </footer>
+            </div>
             <NoMessage v-else />
         </section>
     </div>
@@ -82,6 +52,8 @@
     import NoMessage from '@/components/Common/NoMessage.vue';
     import Conversation from '@/types/Conversation';
     import conversationApiClient from '@/services/conversationApiClient';
+    import MessageCard from '../Cards/MessageCard.vue';
+    import BotTyping from '../Common/BotTyping.vue';
 
     const botTyping = ref(false);
     const newMessage = ref('');
@@ -92,12 +64,6 @@
 
     // Detect if can send message
     const canSend = computed(() => newMessage.value.trim().length > 0 && !botTyping.value);
-
-    const getClassByUserType = (userType: 'User' | 'Client' | 'UserSystem') => {
-        if (userType === 'User') return 'bg-[#3795bd] dark:bg-[#323232] text-white self-start animate-slideInLeft';
-        if (userType === 'Client') return 'bg-white dark:bg-dark-primary self-end dark:text-white animate-slideInRight';
-        return 'bg-gray-400 dark:bg-gray-600 text-white self-center animate-slideInLeft';
-    };
 
     const sendMessage = () => {
         if (!canSend.value || !selectedClient) return;
