@@ -62,7 +62,6 @@
 
     const selectedClient: any = inject('selectedClient');
 
-    // Detect if can send message
     const canSend = computed(() => newMessage.value.trim().length > 0 && !botTyping.value);
 
     const sendMessage = () => {
@@ -80,12 +79,12 @@
                 typeUser: 'Client',
                 text: txt,
                 user: '',
-                createdAt: new Date().toLocaleDateString(),
-                updatedAt: new Date().toLocaleDateString(),
-                deliveredAt: new Date().toLocaleDateString(),
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                deliveredAt: new Date(),
                 readAt: '',
             },
-            createdAt: new Date().toLocaleString(),
+            createdAt: new Date(),
         });
         // Show typing indicator
         botTyping.value = true;
@@ -107,12 +106,12 @@
                     typeUser: 'User',
                     text: 'lorem',
                     user: '',
-                    createdAt: new Date().toLocaleDateString(),
-                    updatedAt: new Date().toLocaleDateString(),
-                    deliveredAt: new Date().toLocaleDateString(),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    deliveredAt: new Date(),
                     readAt: '',
                 },
-                createdAt: new Date().toLocaleString(),
+                createdAt: new Date(),
             });
             botTyping.value = false;
             scrollChatToBottom();
@@ -133,7 +132,7 @@
             try {
                 currentConversation.value = await conversationApiClient.getAll(`${selectedClient.value._id}.json`);
             } catch (error) {
-                console.error('errpr');
+                console.error('error');
             }
         }
     };

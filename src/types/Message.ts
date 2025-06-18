@@ -6,8 +6,8 @@ export default interface Message {
     user: string;
     errorCode?: null | string;
     remoteId?: null | string;
-    createdAt: string;
-    updatedAt: string;
-    deliveredAt: string;
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    deliveredAt: string | Date;
     readAt: string;
 }

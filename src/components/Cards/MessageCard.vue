@@ -1,12 +1,12 @@
 <template>
     <div
         :class="[
-            'relative inline-block max-w-[70%] p-4 rounded-2xl mb-3 leading-snug',
+            'relative inline-block max-w-[30%] min-w-[8%] py-3 px-4 rounded-2xl mb-3 mr-5 leading-snug',
             getClassByUserType(message.typeUser),
         ]"
         :aria-label="message.typeUser === 'Client' ? 'You' : selectedClient.name"
     >
-        <div>{{ message.type == 'text' ? message.text : 'Attached file' }}</div>
+        <div class="mb-2">{{ message.type == 'text' ? message.text : 'Attached file' }}</div>
         <div class="text-xs absolute bottom-1 right-3" aria-hidden="true">
             {{ formatTimestamp(message.createdAt) }}
         </div>
