@@ -47,13 +47,15 @@
 
 <script lang="ts" setup>
     import { computed, inject, nextTick, ref, watch } from 'vue';
-    import { uuidv4, formatTimestamp } from '@/utils/Conversations';
+    import { uuidv4 } from '@/utils/Conversations';
     import HeaderSection from '@/components/Sections/HeaderSection.vue';
     import NoMessage from '@/components/Common/NoMessage.vue';
     import Conversation from '@/types/Conversation';
     import conversationApiClient from '@/services/conversationApiClient';
     import MessageCard from '../Cards/MessageCard.vue';
     import BotTyping from '../Common/BotTyping.vue';
+    import { useGeminiApi } from '@/composables/useGeminiApi';
+    const { sendPrompt } = useGeminiApi();
 
     const botTyping = ref(false);
     const newMessage = ref('');
@@ -94,8 +96,7 @@
 
         // Simulate typing delay, then fetch reply
         setTimeout(async () => {
-            // const reply = await fetchOpenAIReply(txt, currentConversation.value);
-
+            const reply = await askGemini(txt);
             currentConversation.value.push({
                 _id: uuidv4(),
                 type: 'Message',
@@ -104,7 +105,7 @@
                     _id: uuidv4(),
                     type: 'text',
                     typeUser: 'User',
-                    text: 'lorem',
+                    text: reply,
                     user: '',
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -116,6 +117,14 @@
             botTyping.value = false;
             scrollChatToBottom();
         }, 1200);
+    };
+
+    const askGemini = async (prompt: string) => {
+        try {
+            return sendPrompt(prompt);
+        } catch (err: any) {
+            console.log(err);
+        }
     };
 
     const scrollChatToBottom = () => {

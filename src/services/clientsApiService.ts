@@ -2,7 +2,7 @@ import ApiService from './apiService';
 
 class ClientsApiService extends ApiService {
     constructor() {
-        super(`${import.meta.env.VITE_SERVICE_URL}`, 'client');
+        super(`${import.meta.env.VITE_SERVICE_URL}`);
     }
 
     async getAll(params?: string) {
