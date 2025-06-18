@@ -1,6 +1,7 @@
 <template>
     <section class="flex h-18 py-6 border-b border-b-border-primary dark:border-b-dark-border-primary">
         <button
+            data-testid="toggle-sidebar-button"
             class="md:hidden sm:block mr-4 p-2 h-10 rounded hover:bg-gray-100 dark:bg-dark-secondary"
             @click="openSideBar = true"
             aria-label="Open menu"
@@ -28,6 +29,7 @@
             </div>
         </header>
         <button
+            data-testid="dark-mode-button"
             class="ml-auto mr-4 p-2 h-10 rounded-3xl cursor-pointer hover:bg-secondary dark:bg-dark-secondary"
             @click="toggleDark"
             aria-label="Toggle dark mode"
