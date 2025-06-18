@@ -1,6 +1,6 @@
 <template>
     <transition name="snackbar-fade">
-        <div v-if="visible" class="snackbar" :class="type">
+        <div v-if="isVisible" class="snackbar" :class="type">
             <span>{{ message }}</span>
             <button class="close-btn" @click="close">&times;</button>
         </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-    import { ref, watch, onUnmounted } from 'vue';
+    import { useSnackBar } from '@/composables/useSnackBar';
 
     const props = defineProps({
         message: { type: String, required: true },
@@ -16,23 +16,11 @@
         duration: { type: Number, default: 3000 },
     });
 
-    const visible = ref(true);
-    let timer = null;
+    const { isVisible, type, message } = useSnackBar();
 
     const close = () => {
-        visible.value = false;
+        isVisible.value = false;
     };
-
-    watch(visible, (val) => {
-        if (val && props.duration > 0) {
-            clearTimeout(timer);
-            timer = setTimeout(close, props.duration);
-        }
-    });
-
-    onUnmounted(() => {
-        clearTimeout(timer);
-    });
 </script>
 
 <style scoped>

@@ -3,9 +3,10 @@
         <HeaderSection />
 
         <section class="flex flex-col h-[84vh] col-span-2 row-span-2" role="section" aria-label="right section">
-            <div class="flex-1 px-6 py-4 bg-secondary dark:bg-[#292929]" ref="chatMessages" v-if="selectedClient">
+            <div class="flex-1 px-6 py-4 bg-secondary dark:bg-[#292929]" v-if="selectedClient">
                 <div class="px-3 py-3">
                     <div
+                        ref="chatMessages"
                         class="overflow-y-auto scroll-smooth overflow-x-hidden flex flex-col gap-2 max-h-[69vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
                     >
                         <MessageCard v-for="msg in currentConversation" :key="msg._id" :message="msg.message" />
@@ -55,7 +56,9 @@
     import MessageCard from '../Cards/MessageCard.vue';
     import BotTyping from '../Common/BotTyping.vue';
     import { useGeminiApi } from '@/composables/useGeminiApi';
+    import { useSnackBar } from '@/composables/useSnackBar';
     const { sendPrompt } = useGeminiApi();
+    const { showSnackBar } = useSnackBar();
 
     const botTyping = ref(false);
     const newMessage = ref('');
@@ -131,7 +134,6 @@
         nextTick(() => {
             if (chatMessages.value) {
                 chatMessages.value.scrollTop = chatMessages.value.scrollHeight;
-                console.log(chatMessages.value.offsetHeight);
             }
         });
     };
@@ -140,8 +142,12 @@
         if (selectedClient) {
             try {
                 currentConversation.value = await conversationApiClient.getAll(`${selectedClient.value._id}.json`);
+
+                showSnackBar({ message: 'Carga correcta', type: 'success' });
             } catch (error) {
                 console.error('error');
+            } finally {
+                scrollChatToBottom();
             }
         }
     };
@@ -152,13 +158,6 @@
             getConversation();
         },
     );
-
-    // watch(
-    //     () => selectedClient.value && conversation.value.messages.length,
-    //     () => {
-    //         scrollChatToBottom();
-    //     },
-    // );
 </script>
 
 <style scoped>
