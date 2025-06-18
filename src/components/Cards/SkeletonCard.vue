@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center py-3 px-4 my-2.5 rounded-xl bg-gray-100 animate-pulse">
+    <div class="flex h-20 items-center w-full px-5 my-2.5 rounded-xl bg-gray-100 animate-pulse">
         <div class="w-9 h-9 rounded-full bg-gray-300 mr-3 flex-shrink-0"></div>
         <div class="flex-1 min-w-0">
             <div class="h-4 bg-gray-300 rounded w-3/5 mb-2"></div>

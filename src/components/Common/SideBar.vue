@@ -47,7 +47,6 @@
 
     const props = defineProps<{
         isOpen: Boolean;
-        conversations?: any[];
         users: User[];
     }>();
 

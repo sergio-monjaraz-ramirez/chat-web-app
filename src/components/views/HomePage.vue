@@ -1,5 +1,5 @@
 <template>
-    <MainLayout class="@container">
+    <MainLayout data-testid="home-page" class="@container">
         <SideBar :is-open="openSideBar" @onToogle="openSideBar = false" :users="clients" />
         <LeftSection class="@xs:hidden @md:flex" :users="clients" />
         <RightSection />
@@ -7,11 +7,11 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, provide, reactive, ref } from 'vue';
+    import { onMounted, provide, ref } from 'vue';
     import MainLayout from '@/layouts/MainLayout.vue';
-    import LeftSection from '@/components/LeftSection.vue';
-    import RightSection from '@/components/RightSection.vue';
-    import SideBar from '@/components/SideBar.vue';
+    import LeftSection from '@/components/Sections/LeftSection.vue';
+    import RightSection from '@/components/Sections/RightSection.vue';
+    import SideBar from '@/components/Common/SideBar.vue';
     import User from '@/types/Users';
     import clientsApiService from '@/services/clientsApiService';
     import { avatars } from '@/constants';
@@ -33,7 +33,6 @@
         }
     };
 
-    const conversations = reactive([]);
     provide('toggleSideBar', openSideBar);
     provide('selectedClient', selectedClient);
 </script>

@@ -2,22 +2,8 @@
     <div class="w-full border-b border-b-border-primary dark:border-b-dark-border-primary">
         <HeaderSection />
 
-        <section
-            class="flex flex-col h-[84vh] col-span-2 row-span-2"
-            role="main"
-            tabindex="-1"
-            aria-live="polite"
-            aria-relevant="additions"
-        >
-            <section
-                class="flex-1 px-6 py-4 bg-secondary dark:bg-[#292929]"
-                ref="chatMessages"
-                aria-live="polite"
-                aria-atomic="false"
-                aria-relevant="additions"
-                tabindex="0"
-                v-if="selectedClient"
-            >
+        <section class="flex flex-col h-[84vh] col-span-2 row-span-2" role="section" aria-label="right section">
+            <div class="flex-1 px-6 py-4 bg-secondary dark:bg-[#292929]" ref="chatMessages" v-if="selectedClient">
                 <div class="px-3 py-3">
                     <div
                         class="overflow-y-auto scroll-smooth overflow-x-hidden flex flex-col gap-2 max-h-[69vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
@@ -57,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
             <footer
                 class="py-2 px-4 bg-white dark:bg-dark-bg flex items-center gap-2 flex-shrink-0"
                 v-if="selectedClient"
@@ -84,9 +70,7 @@
                     <span class="material-icons text-2xl">send</span>
                 </button>
             </footer>
-            <div v-else>
-                <NoMessage />
-            </div>
+            <NoMessage v-else />
         </section>
     </div>
 </template>
@@ -94,8 +78,8 @@
 <script lang="ts" setup>
     import { computed, inject, nextTick, ref, watch } from 'vue';
     import { uuidv4, formatTimestamp } from '@/utils/Conversations';
-    import HeaderSection from '@/components/HeaderSection.vue';
-    import NoMessage from '@/components/NoMessage.vue';
+    import HeaderSection from '@/components/Sections/HeaderSection.vue';
+    import NoMessage from '@/components/Common/NoMessage.vue';
     import Conversation from '@/types/Conversation';
     import conversationApiClient from '@/services/conversationApiClient';
 
