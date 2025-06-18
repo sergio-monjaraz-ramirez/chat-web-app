@@ -2,6 +2,7 @@ import { render } from '@testing-library/vue';
 import LeftSection from '@/components/Sections/LeftSection.vue';
 import { describe, it, expect } from 'vitest';
 import Users from '@/types/Users';
+import { ref } from 'vue';
 
 const testSelectors = {
     leftSection: 'left-section',
@@ -27,6 +28,11 @@ const users: Users[] = [
 describe('LeftSection Component', () => {
     it('render leftSection component', () => {
         const { getByTestId } = render(LeftSection, {
+            global: {
+                provide: {
+                    selectedClient: ref(null),
+                },
+            },
             props: { users: [] },
         });
 
@@ -35,6 +41,11 @@ describe('LeftSection Component', () => {
 
     it('render the skeleton card when users prop is empty', () => {
         const { getByTestId, getAllByTestId } = render(LeftSection, {
+            global: {
+                provide: {
+                    selectedClient: ref(null),
+                },
+            },
             props: { users: [] },
         });
 
@@ -44,6 +55,11 @@ describe('LeftSection Component', () => {
 
     it('render a list of users', () => {
         const { getAllByTestId } = render(LeftSection, {
+            global: {
+                provide: {
+                    selectedClient: ref(null),
+                },
+            },
             props: { users: users },
         });
         const usersRendered = getAllByTestId(testSelectors.userCard);
